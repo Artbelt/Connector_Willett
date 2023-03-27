@@ -1,0 +1,218 @@
+object Form1: TForm1
+  Left = 244
+  Top = 229
+  Width = 823
+  Height = 423
+  Caption = 'Form1'
+  Color = 15066597
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl1: TLabel
+    Left = 576
+    Top = 168
+    Width = 36
+    Height = 13
+    Caption = #1057#1090#1088#1086#1082#1072
+  end
+  object lbl2: TLabel
+    Left = 600
+    Top = 192
+    Width = 15
+    Height = 13
+    Caption = 'top'
+  end
+  object lbl3: TLabel
+    Left = 600
+    Top = 216
+    Width = 14
+    Height = 13
+    Caption = 'left'
+  end
+  object lbl4: TLabel
+    Left = 576
+    Top = 240
+    Width = 34
+    Height = 13
+    Caption = #1064#1088#1080#1092#1090
+  end
+  object lbl5: TLabel
+    Left = 576
+    Top = 144
+    Width = 44
+    Height = 13
+    Caption = #8470' '#1073#1083#1086#1082#1072
+  end
+  object lbl8: TLabel
+    Left = 96
+    Top = 352
+    Width = 84
+    Height = 28
+    Caption = '7x5'
+    Color = 8421631
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -32
+    Font.Name = 'Willett 7x5'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+  end
+  object lbl7: TLabel
+    Left = 8
+    Top = 360
+    Width = 80
+    Height = 20
+    Caption = '5x5'
+    Color = 8421631
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -32
+    Font.Name = 'Willett 5x5'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+  end
+  object lbl6: TLabel
+    Left = 188
+    Top = 344
+    Width = 96
+    Height = 36
+    Caption = '9X6'
+    Color = 8421631
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -64
+    Font.Name = 'Willett 9x6'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+  end
+  object btn1: TButton
+    Left = 624
+    Top = 256
+    Width = 121
+    Height = 25
+    Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1073#1083#1086#1082
+    TabOrder = 0
+    OnClick = btn1Click
+  end
+  object edt1: TEdit
+    Left = 624
+    Top = 160
+    Width = 153
+    Height = 21
+    TabOrder = 1
+    OnChange = edt1Change
+    OnKeyPress = edt1KeyPress
+  end
+  object edt2: TEdit
+    Left = 624
+    Top = 184
+    Width = 49
+    Height = 21
+    TabOrder = 2
+    Text = '0'
+  end
+  object edt3: TEdit
+    Left = 624
+    Top = 208
+    Width = 49
+    Height = 21
+    TabOrder = 3
+    Text = '0'
+  end
+  object ScrollBox1: TScrollBox
+    Left = 8
+    Top = 8
+    Width = 800
+    Height = 121
+    HorzScrollBar.Range = 800
+    AutoScroll = False
+    Color = clWhite
+    ParentColor = False
+    TabOrder = 4
+    object img1: TImage
+      Left = 0
+      Top = 0
+      Width = 10000
+      Height = 100
+      Align = alCustom
+      OnClick = img1Click
+    end
+  end
+  object cbb1: TComboBox
+    Left = 624
+    Top = 232
+    Width = 49
+    Height = 21
+    ItemHeight = 13
+    TabOrder = 5
+    Text = '7'
+    OnSelect = cbb1Select
+    Items.Strings = (
+      '5'
+      '7'
+      '9')
+  end
+  object edt4: TEdit
+    Left = 624
+    Top = 136
+    Width = 49
+    Height = 21
+    Color = 14342874
+    ReadOnly = True
+    TabOrder = 6
+  end
+  object btn2: TBitBtn
+    Left = 624
+    Top = 328
+    Width = 121
+    Height = 25
+    Caption = #1054#1090#1088#1080#1089#1086#1074#1082#1072' '#1089#1087#1080#1089#1082#1072
+    TabOrder = 7
+    OnClick = btn2Click
+  end
+  object btn3: TBitBtn
+    Left = 624
+    Top = 304
+    Width = 121
+    Height = 25
+    Caption = #1054#1095#1080#1089#1090#1082#1072' '#1082#1072#1085#1074#1099
+    TabOrder = 8
+    OnClick = btn3Click
+  end
+  object btn4: TButton
+    Left = 624
+    Top = 280
+    Width = 121
+    Height = 25
+    Caption = #1059#1076#1072#1083#1080#1090#1100' '#1073#1083#1086#1082
+    TabOrder = 9
+    OnClick = btn4Click
+  end
+  object btn5: TButton
+    Left = 503
+    Top = 256
+    Width = 121
+    Height = 25
+    Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
+    TabOrder = 10
+    OnClick = btn5Click
+  end
+  object btn6: TButton
+    Left = 503
+    Top = 280
+    Width = 121
+    Height = 25
+    Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
+    TabOrder = 11
+  end
+end

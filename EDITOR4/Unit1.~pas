@@ -1,0 +1,578 @@
+unit Unit1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, Buttons;
+
+type
+  TForm1 = class(TForm)
+    btn1: TButton;
+    edt1: TEdit;
+    lbl1: TLabel;
+    edt2: TEdit;
+    edt3: TEdit;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    ScrollBox1: TScrollBox;
+    img1: TImage;
+    cbb1: TComboBox;
+    lbl4: TLabel;
+    edt4: TEdit;
+    lbl5: TLabel;
+    btn2: TBitBtn;
+    btn3: TBitBtn;
+    btn4: TButton;
+    lbl6: TLabel;
+    lbl7: TLabel;
+    lbl8: TLabel;
+    btn5: TButton;
+    btn6: TButton;
+    procedure btn1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure img1Click(Sender: TObject);
+    procedure btn2Click(Sender: TObject);
+    procedure mycanvaspaint;
+    procedure btn3Click(Sender: TObject);
+    procedure btn4Click(Sender: TObject);
+    procedure edt1Change(Sender: TObject);
+    procedure cbb1Select(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure edt1KeyPress(Sender: TObject; var Key: Char);
+    procedure btn5Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+
+
+type
+  TMyparagraph = class(TObject)
+ //protected
+   public
+    Pos:TRect;
+procedure Draw; virtual;
+  end;
+
+
+type
+  TMyParagraphText = class(TMyParagraph)
+  protected
+     Text:String;
+     FontSize:Integer;
+procedure Draw; override;
+  end;
+
+
+
+type
+  TMyParagraphBMP = class(TMyParagraph)
+  protected
+    //Bmp:TBitmap;
+    BMP:string;
+procedure Draw; override;
+  end;
+
+
+
+type
+  TMyParagraphs = class(TList)
+    public
+    procedure Savetofile(const filename: string);
+    procedure Loadfromfile(const filename: string);
+  end;
+
+
+var
+  Form1: TForm1;
+  MyParagraphs:Tmyparagraphs;
+  MyParagraph:TMyParagraph;
+  MyParagraphText:TMYParagraphText;
+  MyParagraphBMP:TMYParagraphBMP;
+  click_point:TPoint;
+
+implementation
+
+procedure TMyParagraphText.Draw;
+begin
+
+  case FontSize of
+
+    5: begin Form1.img1.Canvas.Font.Name:='Willett 5x5';
+             Form1.img1.Canvas.Font.Size:=24;
+             Pos.Right:=pos.Left+length(MyParagraphText.Text)*28+5;
+             Pos.Bottom:=Pos.Top+20;
+        end;
+
+    7: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+             Form1.img1.Canvas.Font.Size:=24;
+             Pos.Right:=Pos.Left+length(MyParagraphText.Text)*28+5;
+             Pos.Bottom:=Pos.Top+28;
+         end;
+
+    9: begin Form1.img1.Canvas.Font.Name:='Willett 9x6';
+             Form1.img1.Canvas.Font.Size:=48;
+             Pos.Right:=Pos.Left+length(MyParagraphText.Text)*32+5;
+             Pos.Bottom:=Pos.Top+36;
+        end;
+
+    16: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+              Form1.img1.Canvas.Font.Size:=36;
+              Pos.Right:=Pos.Left+length(MyParagraphText.Text)*20;
+              Pos.Bottom:=Pos.Top+60;
+         end;
+
+    24: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+              Form1.img1.Canvas.Font.Size:=40;
+              Pos.Right:=Pos.Left+Length(MyParagraphText.Text)*30;
+              Pos.Bottom:=Pos.Top+80;
+         end;
+  end;
+
+  Form1.img1.Canvas.TextOut(pos.Left,pos.Top,text);
+end;
+
+procedure TMyParagraphBMP.Draw;
+var
+  BitMap:TBitmap;
+  StrBitMap:TBitMap;
+  BMP_temp:string;
+begin
+
+    {обработка имени картинки}
+   BMP_temp:=BMP;
+   delete(BMP_temp,1,1);
+   delete(BMP_temp,length(BMP_temp),1);
+   BMP_temp:='bmp\'+BMP_temp+'.bmp';
+
+   {загрузка картинки}
+   BitMap:=TBitmap.Create;
+   BitMap.LoadFromFile(BMP_temp);
+
+   {сжатие картинки}
+   StrBitMap:=TBitmap.Create;
+   StrBitMap.Height:=(BitMap.Height div 7)*4;
+   StrBitMap.Width:=(BitMap.Width div 7)*4;
+   StretchBlt(StrBitMap.Canvas.Handle,0,0,StrBitMap.Width,StrBitMap.Height,BitMap.Canvas.Handle,0,0,BitMap.Width,BiTMap.Height,SRCCOPY);
+
+   {рамка}
+   pos.Right:=pos.Left+StrBitMap.Width;
+   pos.Bottom:=pos.Top+StrBitMap.Height;
+
+   {отрисовка картинки}
+   Form1.img1.Canvas.Draw(pos.Left,pos.Top,StrBitMap);
+
+   {освобождение переменных}
+   BitMap.Free;
+   StrBitMap.Free;
+   bmp_temp:='';
+
+end;
+
+procedure TMyParagraph.Draw;
+begin
+   if Myparagraph = myparagraphText then  showmessage('TEXT'){TMyParagraphText.Draw};
+   if myparagraph = myparagraphBMP then showmessage('TEXT'){TMyParagraphText.Draw};
+end;
+
+procedure TMyParagraphs.SaveToFile(const FileName:string);
+var
+  cnt:integer;
+  x1,y1,x2,y2:integer;
+begin
+ if MyParagraphs.Count>0 then
+ begin
+  Myparagraphs.First;
+  for cnt := 0 to MyParagraphs.Count-1 do
+  begin
+    if TMyparagraph(MyParagraphs[cnt])=MyParagraphText then
+    begin
+      y1:=MyParagraphText.Pos.Top;
+      x1:=MyParagraphText.Pos.Left;
+      y2:=MyParagraphText.Pos.Bottom;
+      x2:=MyParagraphText.Pos.Right;
+    end;
+
+    if TMyparagraph(MyParagraphs[cnt])=MyParagraphBMP then
+    begin
+       //
+    end;
+    end;
+ end;
+ Showmessage('List is empty');
+  end;
+
+
+
+procedure TmyParagraphs.LoadFromFile(const Filename:string);
+begin
+  //
+end;
+
+{$R *.dfm}
+{ОТРИСОВКА СПИСКА ВСЕХ БЛОКОВ}
+procedure TForm1.MyCanvasPaint;
+var
+  i:integer;
+begin
+  for I := 0 to MyParagraphs.Count - 1 do  TmyParagraph(Myparagraphs[i]).Draw;
+end;
+
+procedure TForm1.btn1Click(Sender: TObject);
+begin
+{ЕСЛИ ТЕКСТ}
+if (edt1.Text[1]<>'$')and(edt1.Text[Length(edt1.Text)]<>'$') then
+  begin
+    MyparagraphText:=TMYparagraphText.Create;
+    MyParagraphText.Pos.Left:=StrToInt(edt3.text);
+    MyParagraphText.Pos.Top:=StrToInt(edt2.Text);
+    MyParagraphText.FontSize:=StrToInt(cbb1.text);
+    MyParagraphText.Text:=edt1.Text;
+    {добавление в общий список нового блока}
+    MyParagraphs.Add(MyParagraphText);
+
+  end;
+
+{ЕСЛИ РИСУНОК}
+if (edt1.Text[1]='$')and(edt1.Text[Length(edt1.Text)]='$') then
+  begin
+    MyparagraphBMP:=TMYparagraphBMP.Create;
+    MyParagraphBMP.Pos.Left:=StrToInt(edt3.text);
+    MyParagraphBMP.Pos.Top:=StrToInt(edt2.Text);
+    MyParagraphBMP.Bmp:=edt1.Text;
+    {добавление в общий список нового блока}
+    MyParagraphs.Add(MyParagraphBMP);
+
+  end;
+
+{ОТРИСОВКА ТОЛЬКО ЧТО ДОБАВЛЕННОГО БЛОКА}
+TmyParagraph(MyParagraphs.Last).Draw;
+
+{УСТАНОВКА КУРСОРА В НОВЫЙ БЛОК : Очистка Editов для нового поля}
+
+edt2.Text:=IntToSTr(TmyParagraph(MyParagraphs.Last).Pos.Top);
+edt3.Text:=InTTostr(TMyParagraph(MyParagraphs.Last).Pos.Right);
+edt1.Text:=' ';
+edt1.SetFocus;
+
+{проверка длины сообщения}
+if TmyParagraph(MyParagraphs.Last).Pos.Right >= Scrollbox1.HorzScrollBar.Range then
+  begin
+    img1.Width:=TmyParagraph(MyParagraphs.Last).Pos.Right+1200;
+    Scrollbox1.HorzScrollBar.Range:=TmyParagraph(MyParagraphs.Last).Pos.Right+100;
+  end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+{СОЗДАЕМ СПИСОК ГДЕ БУДУТ ХРАНИТЬСЯ ПОЛЯ}
+MyParagraphs:=TMyParagraphs.Create;
+
+end;
+
+procedure TForm1.img1Click(Sender: TObject);
+var
+  i:Integer;
+begin
+  click_point.X:=Mouse.CursorPos.X-form1.Left-scrollbox1.Left-13;
+  click_point.Y:=Mouse.CursorPos.Y-form1.Top-scrollbox1.top-36;
+for i:=0 to MyParagraphs.Count-1 do
+  begin
+    //  {перерисовка всех полей и смена фокуса}
+      btn3.click;
+      btn2.Click;
+      //TMyparagraph(MyParagraphs[i]).Draw;
+      {проверка какому TRECT принадлежит точка}
+      if PtInRect(TMyParagraph(MyParagraphs[i]).pos,click_point)
+      then
+          begin
+             // ShowMessage('блок №'+IntTostr(i));
+              form1.img1.Canvas.DrawFocusRect(TMyparagraph(MyParagraphs[i]).Pos);
+              edt4.Text:=IntToStr(i);
+             { edt1.Text:=TMyparagraphText(MyParagraphs[i]).Text;
+              edt2.Text:=IntToStr(TMyparagraph(MyParagraphs[i]).pos.top);
+              edt3.Text:=IntToStr(TMyparagraph(MyParagraphs[i]).pos.left);}
+           end;
+    end;
+
+   Form1.Caption:=IntToStr(click_point.x)+' '+IntToStr(click_point.y);
+end;
+
+{ОТРИСОВКА ВСЕХ БЛОКОВ}
+procedure TForm1.btn2Click(Sender: TObject);
+begin
+form1.mycanvaspaint;
+end;
+
+{ОЧИСТКА КАНВЫ}
+procedure TForm1.btn3Click(Sender: TObject);
+begin
+  form1.img1.Canvas.Pen.Color:=clwhite;
+  form1.img1.canvas.Rectangle(img1.BoundsRect);
+end;
+
+procedure TForm1.btn4Click(Sender: TObject);
+var
+  i:integer;
+begin
+  if edt4.Text<>'' then
+       begin
+          i:=StrToInt(edt4.text);
+          MyParagraphs.Delete(i);
+          form1.mycanvaspaint;
+        end
+       else showmessage('ни один блок не не выделен');
+
+end;
+
+
+
+
+procedure TForm1.edt1Change(Sender: TObject);
+var
+  FRect:TRECT;
+  BitMap1:TBitmap;
+  StrBitMap1:TBitMap;{уменьшенная картинка}
+  BMP_temp1:string;
+begin
+
+{ЕСЛИ СТРОЧКА - ТЕКСТ А НЕ РИСУНОК}
+if (edt1.Text<>'')and(edt1.Text[1]<>'$')and(edt1.Text[Length(edt1.Text)]<>'$') then
+  begin
+    case StrToInt(cbb1.Text) of
+
+     5: begin Form1.img1.Canvas.Font.Name:='Willett 5x5';
+             Form1.img1.Canvas.Font.Size:=24;
+             FRect.Left:=StrToInt(edt3.text);
+             FRect.Top:=StrToInt(edt2.Text);
+             FRect.Right:=FRect.Left+length(edt1.Text)*28+5;
+             FRect.Bottom:=FRect.Top+20;
+        end;
+
+     7: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+             Form1.img1.Canvas.Font.Size:=24;
+             FRect.Left:=StrToInt(edt3.text);
+             FRect.Top:=StrToInt(edt2.Text);
+             FRect.Right:=FRect.Left+length(edt1.Text)*28+5;
+             FRect.Bottom:=FRect.Top+28;
+         end;
+
+     9: begin Form1.img1.Canvas.Font.Name:='Willett 9x6';
+             Form1.img1.Canvas.Font.Size:=48;
+             FRect.Left:=StrToInt(edt3.text);
+             FRect.Top:=StrToInt(edt2.Text);
+             FRect.Right:=FRect.Left+length(edt1.Text)*32+5;
+             FRect.Bottom:=FRect.Top+36;
+        end;
+
+     16: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+              Form1.img1.Canvas.Font.Size:=36;
+         end;
+
+      24: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+              Form1.img1.Canvas.Font.Size:=40;
+         end;
+     end;
+     btn3.Click;//очистка канвы
+     Form1.img1.Canvas.TextOut(StrToInt(edt3.Text),StrToInt(edt2.text),edt1.Text);
+     Form1.img1.Canvas.DrawFocusRect(FRect);
+     form1.mycanvaspaint;
+    end;
+
+{ЕСЛИ СТРОЧКА -  РИСУНОК А НЕ ТЕКСТ}
+if (edt1.Text<>'')and(edt1.Text[1]='$')and(edt1.Text[Length(edt1.Text)]='$')and(length(edt1.Text)<>1{вариант $})and(length(edt1.Text)<>2{вариант $$}) then
+  begin
+
+   btn3.Click;//очистка канвы
+   form1.mycanvaspaint;  //отрисовка сохраненных блоков
+
+    {обработка имени картинки}
+   BMP_temp1:=edt1.Text;
+   delete(BMP_temp1,1,1);
+   delete(BMP_temp1,length(BMP_temp1),1);
+   BMP_temp1:='bmp\'+BMP_temp1+'.bmp';
+
+   {загрузка картинки}
+   BitMap1:=TBitmap.Create;
+   BitMap1.LoadFromFile(BMP_temp1);
+
+   {сжатие картинки}
+   StrBitMap1:=TBitmap.Create;
+   StrBitMap1.Height:=(BitMap1.Height div 7)*4;
+   StrBitMap1.Width:=(BitMap1.Width div 7)*4;
+   StretchBlt(StrBitMap1.Canvas.Handle,0,0,StrBitMap1.Width,StrBitMap1.Height,BitMap1.Canvas.Handle,0,0,BitMap1.Width,BiTMap1.Height,SRCCOPY);
+
+   {фокусная рамка}
+   Frect.Left:=StrToInt(edt3.text);
+   FRect.Top:=StrToInt(edt2.text);
+   Frect.Right:=Frect.Left+StrBitMap1.Width;
+   FRect.Bottom:=Frect.Top+StrBitMap1.Height;
+
+   {отрисовка картинки}
+   Form1.img1.Canvas.Draw(FRect.Left,Frect.Top,StrBitMap1);
+
+   {отрисовка рамки фокуса}
+   Form1.img1.Canvas.DrawFocusRect(FRect);
+
+   {освобождение переменных}
+   BitMap1.Free;
+   StrBitMap1.Free;
+   bmp_temp1:='';
+  end;
+
+ {ЕСЛИ СТРОЧКА ПУСТАЯ}
+  if edt1.Text='' then
+  begin
+     btn3.Click;//очистка канвы
+     form1.mycanvaspaint;
+     Form1.img1.Canvas.DrawFocusRect(FRect);
+  end;
+
+end;
+
+procedure TForm1.cbb1Select(Sender: TObject);
+var
+  FRect:TRECT;
+
+begin
+
+{ЕСЛИ СТРОЧКА - ТЕКСТ А НЕ РИСУНОК}
+if (edt1.Text<>'')and(edt1.Text[1]<>'$')and(edt1.Text[Length(edt1.Text)]<>'$') then
+  begin
+    case StrToInt(cbb1.Text) of
+
+     5: begin Form1.img1.Canvas.Font.Name:='Willett 5x5';
+             Form1.img1.Canvas.Font.Size:=24;
+             FRect.Left:=StrToInt(edt3.text);
+             FRect.Top:=StrToInt(edt2.Text);
+             FRect.Right:=FRect.Left+length(edt1.Text)*28+5;
+             FRect.Bottom:=FRect.Top+20;
+        end;
+
+     7: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+             Form1.img1.Canvas.Font.Size:=24;
+             FRect.Left:=StrToInt(edt3.text);
+             FRect.Top:=StrToInt(edt2.Text);
+             FRect.Right:=FRect.Left+length(edt1.Text)*28+5;
+             FRect.Bottom:=FRect.Top+28;
+         end;
+
+     9: begin Form1.img1.Canvas.Font.Name:='Willett 9x6';
+             Form1.img1.Canvas.Font.Size:=48;
+             FRect.Left:=StrToInt(edt3.text);
+             FRect.Top:=StrToInt(edt2.Text);
+             FRect.Right:=FRect.Left+length(edt1.Text)*32+5;
+             FRect.Bottom:=FRect.Top+36;
+        end;
+
+     16: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+              Form1.img1.Canvas.Font.Size:=36;
+         end;
+
+      24: begin Form1.img1.Canvas.Font.Name:='Willett 7x5';
+              Form1.img1.Canvas.Font.Size:=40;
+          end;
+     end;
+     btn3.Click;//очистка канвы
+     Form1.img1.Canvas.TextOut(StrToInt(edt3.Text),StrToInt(edt2.text),edt1.Text);
+     form1.mycanvaspaint;
+     Form1.img1.Canvas.DrawFocusRect(FRect);
+    end;
+   edt1.SetFocus;
+  
+end;
+
+procedure TForm1.FormShow(Sender: TObject);
+begin
+{Установка фокуса ввода на поле ввода текста}
+edt1.SetFocus;
+end;
+
+procedure TForm1.edt1KeyPress(Sender: TObject; var Key: Char);
+var
+  FREct:TRect;
+begin
+if Key=#13 then
+  begin
+   {ЕСЛИ ТЕКСТ}
+    if (edt1.Text[1]<>'$')and(edt1.Text[Length(edt1.Text)]<>'$') then
+    begin
+      MyparagraphText:=TMYparagraphText.Create;
+      MyParagraphText.Pos.Left:=StrToInt(edt3.text);
+      MyParagraphText.Pos.Top:=StrToInt(edt2.Text);
+      MyParagraphText.FontSize:=StrToInt(cbb1.text);
+      MyParagraphText.Text:=edt1.Text;
+      {добавление в общий список нового блока}
+      MyParagraphs.Add(MyParagraphText);
+
+     end;
+
+     {ЕСЛИ РИСУНОК}
+    if (edt1.Text[1]='$')and(edt1.Text[Length(edt1.Text)]='$') then
+    begin
+     MyparagraphBMP:=TMYparagraphBMP.Create;
+     MyParagraphBMP.Pos.Left:=StrToInt(edt3.text);
+     MyParagraphBMP.Pos.Top:=StrToInt(edt2.Text);
+     MyParagraphBMP.Bmp:=edt1.Text;
+     {добавление в общий список нового блока}
+     MyParagraphs.Add(MyParagraphBMP);
+
+    end;
+
+    {ОТРИСОВКА ТОЛЬКО ЧТО ДОБАВЛЕННОГО БЛОКА}
+      TmyParagraph(MyParagraphs.Last).Draw;
+
+{*************************************************************************************}
+{*                       УСТАНОВКА КУРСОРА В НОВЫЙ БЛОК(СНИЗУ...) :                  *}
+{*************************************************************************************}
+ 
+    edt1.Text:=' ';
+    edt1.SetFocus;
+
+{************************************************************************************}
+{*                        ПРОВЕРКА: ВЛЕЗЕТ ЛИ БЛОК ПОД СУЩЕСТВУЮЩИЙ БЛОК             }
+{************************************************************************************}
+{*}    FREct.Top:=TmyParagraph(MyParagraphs.Last).Pos.Bottom;
+{*}
+{*}   case StrToInt(cbb1.Text) of
+{*}      5: FRect.Bottom:=FREct.Top+20;
+{*}      7: FRect.Bottom:=FREct.Top+28;
+{*}      9: FRect.Bottom:=FREct.Top+36;
+{*}      16: FRect.Bottom:=FREct.Top+36;
+{*}      24: FRect.Bottom:=FREct.Top+36;
+{*}   end;
+{*}
+{*}   if (img1.Height-FRect.Top)>(FREct.Bottom-Frect.top)  then
+{*}     begin
+{*}        edt2.Text:=IntToStr(FRect.top);
+{*}     end
+{*}      else
+{*}        begin
+{*}              edt2.Text:=IntToSTr(TmyParagraph(MyParagraphs.Last).Pos.Top);
+{*}              edt3.Text:=InTTostr(TMyParagraph(MyParagraphs.Last).Pos.Right);
+             {edt1.Text:=' ';
+            edt1.SetFocus;}
+{*}        end;
+{*}
+{*}
+{*************************************************************************************}
+      {проверка длины сообщения}
+      if TmyParagraph(MyParagraphs.Last).Pos.Right >= Scrollbox1.HorzScrollBar.Range then
+    begin
+     img1.Width:=TmyParagraph(MyParagraphs.Last).Pos.Right+1200;
+     Scrollbox1.HorzScrollBar.Range:=TmyParagraph(MyParagraphs.Last).Pos.Right+100;
+     end;
+        edt2.SetFocus;
+        edt1.SetFocus;
+    end;
+  end;
+
+procedure TForm1.btn5Click(Sender: TObject);
+begin
+MyParagraphs.Savetofile('1.lst');
+end;
+
+end.

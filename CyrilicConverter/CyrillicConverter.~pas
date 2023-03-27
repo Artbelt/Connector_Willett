@@ -1,0 +1,115 @@
+unit CyrillicConverter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    Button1: TButton;
+    Memo1: TMemo;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  x:Integer;
+  s:string;
+  s1:Char;
+begin
+s:=Edit1.Text;
+for  x:=1  to Length(Edit1.text)  do
+  begin
+
+      if s[x]='à' then begin s1:='a' ; s[x]:=s1 end;
+      if s[x]='á' then begin s1:='§' ; s[x]:=s1 end;
+      if s[x]='â' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='ã' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='ä' then begin s1:='¬' ; s[x]:=s1 end;
+      if s[x]='å' then begin s1:='e' ; s[x]:=s1 end;
+      if s[x]='¸' then begin s1:='e' ; s[x]:=s1 end;
+      if s[x]='æ' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='ç' then begin s1:='±' ; s[x]:=s1 end;
+      if s[x]='è' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='é' then begin s1:='µ' ; s[x]:=s1 end;
+      if s[x]='ê' then begin s1:='¶' ; s[x]:=s1 end;
+      if s[x]='ë' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='ì' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='í' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='î' then begin s1:='o' ; s[x]:=s1 end;
+      if s[x]='ï' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='ğ' then begin s1:='p' ; s[x]:=s1 end;
+      if s[x]='ñ' then begin s1:='c' ; s[x]:=s1 end;
+      if s[x]='ò' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='ó' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='ô' then begin s1:='A' ; s[x]:=s1 end;
+      if s[x]='õ' then begin s1:='x' ; s[x]:=s1 end;
+      if s[x]='ö' then begin s1:='A' ; s[x]:=s1 end;
+      if s[x]='÷' then begin s1:='A' ; s[x]:=s1 end;
+      if s[x]='ø' then begin s1:='C' ; s[x]:=s1 end;
+      if s[x]='ù' then begin s1:='E' ; s[x]:=s1 end;
+      if s[x]='ú' then begin s1:='E' ; s[x]:=s1 end;
+      if s[x]='û' then begin s1:='I' ; s[x]:=s1 end;
+      if s[x]='ü' then begin s1:='I' ; s[x]:=s1 end;
+      if s[x]='ı' then begin s1:='N' ; s[x]:=s1 end;
+      if s[x]='ş' then begin s1:='O' ; s[x]:=s1 end;
+      if s[x]='ÿ' then begin s1:='O' ; s[x]:=s1 end;
+      if s[x]='À' then begin s1:='A' ; s[x]:=s1 end;
+      if s[x]='Á' then begin s1:='¦' ; s[x]:=s1 end;
+      if s[x]='Â' then begin s1:='B' ; s[x]:=s1 end;
+      if s[x]='Ã' then begin s1:='©' ; s[x]:=s1 end;
+      if s[x]='Ä' then begin s1:='«' ; s[x]:=s1 end;
+      if s[x]='Å' then begin s1:='E' ; s[x]:=s1 end;
+      if s[x]='¨' then begin s1:='­' ; s[x]:=s1 end;
+      if s[x]='Æ' then begin s1:='®' ; s[x]:=s1 end;
+      if s[x]='Ç' then begin s1:='°' ; s[x]:=s1 end;
+      if s[x]='È' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='É' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='Ê' then begin s1:='K' ; s[x]:=s1 end;
+      if s[x]='Ë' then begin s1:='·' ; s[x]:=s1 end;
+      if s[x]='Ì' then begin s1:='M' ; s[x]:=s1 end;
+      if s[x]='Í' then begin s1:='H' ; s[x]:=s1 end;
+      if s[x]='Î' then begin s1:='O' ; s[x]:=s1 end;
+      if s[x]='Ï' then begin s1:='»' ; s[x]:=s1 end;
+      if s[x]='Ğ' then begin s1:='P' ; s[x]:=s1 end;
+      if s[x]='Ñ' then begin s1:='C' ; s[x]:=s1 end;
+      if s[x]='Ò' then begin s1:='T' ; s[x]:=s1 end;
+      if s[x]='Ó' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='Ô' then begin s1:='A' ; s[x]:=s1 end;
+      if s[x]='Õ' then begin s1:='X' ; s[x]:=s1 end;
+      if s[x]='Ö' then begin s1:='A' ; s[x]:=s1 end;
+      if s[x]='×' then begin s1:='A' ; s[x]:=s1 end;
+      if s[x]='Ø' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='Ù' then begin s1:='E' ; s[x]:=s1 end;
+      if s[x]='Ú' then begin s1:='E' ; s[x]:=s1 end;
+      if s[x]='Û' then begin s1:='I' ; s[x]:=s1 end;
+      if s[x]='Ü' then begin s1:='I' ; s[x]:=s1 end;
+      if s[x]='İ' then begin s1:='?' ; s[x]:=s1 end;
+      if s[x]='Ş' then begin s1:='O' ; s[x]:=s1 end;
+      if s[x]='ß' then begin s1:='O' ; s[x]:=s1 end;
+
+
+  end;
+    Edit2.Text:=s;
+    Memo1.Lines.Add(Edit1.Text+'--->'+edit2.Text);
+
+end;
+
+end.
